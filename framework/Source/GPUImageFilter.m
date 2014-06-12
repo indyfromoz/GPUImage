@@ -156,12 +156,10 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 
 - (void)dealloc
 {
-#if ( (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0) || (!defined(__IPHONE_6_0)) )
     if (imageCaptureSemaphore != NULL)
     {
         dispatch_release(imageCaptureSemaphore);
     }
-#endif
 }
 
 #pragma mark -
