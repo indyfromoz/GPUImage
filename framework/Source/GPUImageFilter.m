@@ -156,10 +156,13 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 
 - (void)dealloc
 {
+#if !OS_OBJECT_USE_OBJC
     if (imageCaptureSemaphore != NULL)
     {
         dispatch_release(imageCaptureSemaphore);
     }
+#endif
+
 }
 
 #pragma mark -
@@ -187,7 +190,6 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
         return NULL;
     }
 
-    // All image output is now managed by the framebuffer itself
     GPUImageFramebuffer* framebuffer = [self framebufferForOutput];
     
     usingNextFrameForImageCapture = NO;
@@ -195,9 +197,6 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     
     CGImageRef image = [framebuffer newCGImageFromFramebufferContents];
     return image;
-    
-    // Bug #1472 - Framebuffer is dealloc'd before newCGImageFromFramebufferContents completes
-    //return [[self framebufferForOutput] newCGImageFromFramebufferContents];
 }
 
 #pragma mark -
